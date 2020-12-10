@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import helper from "./helper";
+import "./reset.css";
 import "./styles.css";
 
 export default function App() {
-  let dishes = helper.dishes();
+  const [dishOfType, setDishOfType] = useState("all");
 
+  function dishTypeBtnClickHandler(dishType) {
+    setDishOfType(dishType);
+  }
+
+  let dishDB = helper.dishDB();
+  let allDishes = helper.allDishes();
+  let bakedDishes = helper.bakedDishes();
+  let grilledDishes = helper.grilledDishes();
+  let friedDishes = helper.friedDishes();
+
+  // ===============
   let dishJSXArray = [];
 
   let generateDishJSX = (allDishes, category) => {
@@ -53,46 +65,62 @@ export default function App() {
     // return dishJSXArray;
   };
 
-  let allDishCards = () => generateDishJSX(dishes, "all");
-  let friedDishCards = () => generateDishJSX(dishes, "fried");
-  let bakedDishCards = () => {
-    generateDishJSX(dishes, "baked");
-    console.log("In baked dish cards");
-    return dishJSXArray;
-  };
-  let grilledDishCards = () => generateDishJSX(dishes, "grilled");
-
   function printCards(cardArray) {
     cardArray.map((card, index) => {
       return <li key={index}>{card}</li>;
     });
   }
+  // ==============
 
   return (
     <div className="App">
       <h1>Meal Suggestor</h1>
       <h2>A neoG-markNine submission</h2>
-      <h2>Choose a category</h2>
+      <h3>Choose a category</h3>
       <div className="category-buttons">
-        <button className="btn btn-black">All</button>
+        <button
+          className="btn btn-black"
+          onClick={() => dishTypeBtnClickHandler("all")}
+        >
+          All
+        </button>
         <button
           className="btn btn-red"
-          onClick={() => printCards(friedDishCards())}
+          onClick={() => dishTypeBtnClickHandler("fried")}
         >
           Fried
         </button>
         <button
           className="btn btn-green"
-          onClick={() => printCards(bakedDishCards())}
+          onClick={() => dishTypeBtnClickHandler("baked")}
         >
           Baked
         </button>
-        <button className="btn btn-blue">Grilled</button>
+        <button
+          className="btn btn-blue"
+          onClick={() => dishTypeBtnClickHandler("grilled")}
+        >
+          Grilled
+        </button>
       </div>
 
       <div className="food-cards">
-        {dishJSXArray.map((value, index) => {
-          return <li key={index}>{value}</li>;
+        {dishDB[dishOfType].map((dish, index) => {
+          return (
+            <li key={index}>
+              <div className="container">
+                <div className="card">
+                  <div className="dish-img">
+                    <img src={dish.imgURL} />
+                  </div>
+                  <div className="dish-desc">
+                    <h4>{dish.name}</h4>
+                    <p>{dish.description}</p>
+                  </div>
+                </div>
+              </div>
+            </li>
+          );
         })}
       </div>
     </div>
