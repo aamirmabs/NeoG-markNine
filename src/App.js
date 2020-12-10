@@ -4,73 +4,16 @@ import "./reset.css";
 import "./styles.css";
 
 export default function App() {
+  // set up hook
   const [dishOfType, setDishOfType] = useState("all");
 
+  // event handler to be triggered on dish type button click
   function dishTypeBtnClickHandler(dishType) {
     setDishOfType(dishType);
   }
 
+  // copying database object
   let dishDB = helper.dishDB();
-  let allDishes = helper.allDishes();
-  let bakedDishes = helper.bakedDishes();
-  let grilledDishes = helper.grilledDishes();
-  let friedDishes = helper.friedDishes();
-
-  // ===============
-  let dishJSXArray = [];
-
-  let generateDishJSX = (allDishes, category) => {
-    console.log("Entered generateDishJSX", category);
-    // dishJSXArray = [];
-    // console.log(dishJSXArray);
-    // JSX for dish of particular category
-    for (const dish of allDishes) {
-      if (dish.category === category) {
-        dishJSXArray.push(
-          <div className="container">
-            <div className="card">
-              <div className="dish-img">
-                <img src={dish.imgURL} />
-              </div>
-              <div className="dish-desc">
-                <h4>{dish.name}</h4>
-                <p>{dish.description}</p>
-              </div>
-            </div>
-          </div>
-        );
-      }
-    }
-
-    // JSX for "all" dishes
-    if (category === "all") {
-      for (const dish of allDishes) {
-        dishJSXArray.push(
-          <div className="container">
-            <div className="card">
-              <div className="dish-img">
-                <img src={dish.imgURL} />
-              </div>
-              <div className="dish-desc">
-                <h4>{dish.name}</h4>
-                <p>{dish.description}</p>
-              </div>
-            </div>
-          </div>
-        );
-      }
-    }
-    console.log("Exiting generateDishJSX");
-    // console.log(dishJSXArray);
-    // return dishJSXArray;
-  };
-
-  function printCards(cardArray) {
-    cardArray.map((card, index) => {
-      return <li key={index}>{card}</li>;
-    });
-  }
-  // ==============
 
   return (
     <div className="App">
@@ -78,6 +21,7 @@ export default function App() {
       <h2>A neoG-markNine submission</h2>
       <h3>Choose a category</h3>
       <div className="category-buttons">
+        {/* setting event handler to all buttons */}
         <button
           className="btn btn-black"
           onClick={() => dishTypeBtnClickHandler("all")}
@@ -105,6 +49,7 @@ export default function App() {
       </div>
 
       <div className="food-cards">
+        {/* looping over database and printing cards */}
         {dishDB[dishOfType].map((dish, index) => {
           return (
             <li key={index}>
