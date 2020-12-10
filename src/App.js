@@ -4,34 +4,48 @@ import "./styles.css";
 
 export default function App() {
   let dishes = helper.dishes();
-  let dish = {
-    category: "baked",
-    name: "Veggie Breakfast Bakes",
-    description: "It's packed with vegetables and oven-baked",
-    imgURL:
-      "https://www.bbcgoodfoodme.com/assets/legacy/recipe_images/recipe-image-legacy-id--1201575_11.jpg"
+
+  let dishJSXArray = [];
+
+  let generateDishJSX = (allDishes, category) => {
+    for (const dish of allDishes) {
+      if (dish.category === category) {
+        dishJSXArray.push(
+          <div className="container">
+            <div className="card">
+              <div className="dish-img">
+                <img src={dish.imgURL} />
+              </div>
+              <div className="dish-desc">
+                <h4>{dish.name}</h4>
+                <p>{dish.description}</p>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    }
   };
+
+  let test = generateDishJSX(dishes, "baked");
+  console.log(test);
 
   return (
     <div className="App">
       <h1>Meal Suggestor</h1>
       <h2>A neoG-markNine submission</h2>
       <h2>Choose a category</h2>
-      <div class="category-buttons">
-        <button class="btn btn-red">Fried</button>
-        <button class="btn btn-green">Baked</button>
-        <button class="btn btn-blue">Baked</button>
+      <div className="category-buttons">
+        <button className="btn btn-black">All</button>
+        <button className="btn btn-red">Fried</button>
+        <button className="btn btn-green">Baked</button>
+        <button className="btn btn-blue">Grilled</button>
       </div>
-      <div class="food-cards">
-        <div class="card">
-          <div class="dish-img">
-            <img src={dish.imgURL} />
-          </div>
-          <div class="dish-desc">
-            <h4>{dish.name}</h4>
-            <p>{dish.description}</p>
-          </div>
-        </div>
+
+      <div className="food-cards">
+        {dishJSXArray.map((value, index) => {
+          return <li key={index}>{value}</li>;
+        })}
       </div>
     </div>
   );
